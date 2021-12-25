@@ -1,0 +1,4 @@
+resources:
+  - Solvers.App/Deploy/Dev/secrets.yml
+  - Solvers.App/Deploy/Dev/mysql.yml
+  - Solvers.App/Deploy/Dev/app.yml

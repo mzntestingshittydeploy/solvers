@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: solvers-app
+  name: solvers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: solvers-app
+  template:
+    metadata:
+      labels:
+        app: solvers-app
+    spec:
+      containers:
+        - name: solvers
+          image: solvers
+          ports:
+            - containerPort: 80
+              name: solvers
+          env:
+            - name: ConnectionStrings__WriteDatabase
+              valueFrom:
+                secretKeyRef:
+                  name: solvers-connection-strings
+                  key: write-database
+            - name: ConnectionStrings__ReadDatabase
+              valueFrom:
+                secretKeyRef:
+                  name: solvers-connection-strings
+                  key: read-database
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: solvers-app-service
+  labels:
+    app: solvers-service
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: solvers-app
+
